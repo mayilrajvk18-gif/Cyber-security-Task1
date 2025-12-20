@@ -1,21 +1,30 @@
-MIT License
+pip install scapy
+from scapy.all import *
 
-Copyright (c) 2025 mayilrajvk18-gif
+def packet_callback(packet):
+    print("\n=== PACKET CAPTURED ===")
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+    # Check if the packet has an IP layer
+    if packet.haslayer(IP):
+        src_ip = packet[IP].src
+        dst_ip = packet[IP].dst
+        proto = packet[IP].proto
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+        print(f"Source IP: {src_ip}")
+        print(f"Destination IP: {dst_ip}")
+        print(f"Protocol: {proto}")
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+        # Check for Raw Payload
+        if packet.haslayer(Raw):
+            try:
+                print(f"Payload: {packet[Raw].load}")
+            except:
+                print("Payload: Unable to decode")
+        else:
+            print("Payload: None")
+    else:
+        print("Non-IP Packet Captured")
+
+# Capture packets (CTRL + C to stop)
+print("Starting packet sniffer... Press CTRL+C to stop.")
+sniff(prn=packet_callback, store=False)
