@@ -15,8 +15,8 @@ It captures network packets and displays useful information such as source IP, d
 
 ## How to Run
 1. Install Python
-2. Install Scapy:
- 3. Run the program:
+2. Install Scapy
+ 3. Run the program
  ## Internship Task
 Cyber Security – Task 1  
 Basic Network Sniffer
